@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+
+# Node / web build output
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Swift Package Manager
+ios/.build/
+
+# Xcode generated files
+DerivedData/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+**/xcuserdata/
+
+# Generated Xcode project (regenerate from ios/project.yml)
+ios/Mnesia.xcodeproj/
+
+# Simulator and local Apple build artifacts
+*.ipa
+*.dSYM

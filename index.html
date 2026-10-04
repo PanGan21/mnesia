@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mnesia</title>
+    <meta
+      name="description"
+      content="Find any photo or video by describing it. Your photos stay on your device."
+    />
+    <meta name="theme-color" content="#f4f2ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1e1d19" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/assets/mnesia-mark.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="/assets/fonts/atkinson-hyperlegible-next-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <svg class="icon-sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-search" viewBox="0 0 24 24">
+        <circle cx="10.5" cy="10.5" r="6.5" />
+        <path d="m15.5 15.5 5 5" />
+      </symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24">
+        <path
+          d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"
+        />
+      </symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></symbol>
+      <symbol id="i-left" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7" /></symbol>
+      <symbol id="i-right" viewBox="0 0 24 24"><path d="m9.5 5 7 7-7 7" /></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24">
+        <path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="none" />
+      </symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24">
+        <path d="M4 7h10M18 7h2M4 17h4M12 17h8" />
+        <circle cx="16" cy="7" r="2" />
+        <circle cx="10" cy="17" r="2" />
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24">
+        <rect x="5" y="10.5" width="14" height="10" rx="2" />
+        <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" />
+      </symbol>
+    </svg>
+
+    <a class="skip-link" href="#query">Skip to search</a>
+
+    <header class="top">
+      <a class="brand" href="/">
+        <img src="/assets/mnesia-mark.svg" alt="" width="36" height="36" />
+        <span>mnesia</span>
+      </a>
+
+      <div class="top-actions">
+        <label class="button button-primary">
+          <input type="file" accept="image/*,video/*" multiple data-file-input />
+          <svg class="icon" aria-hidden="true"><use href="#i-plus" /></svg>
+          <span>Add photos</span>
+        </label>
+        <button class="button button-plain" type="button" data-open-sheet>
+          <svg class="icon" aria-hidden="true"><use href="#i-settings" /></svg>
+          <span>Settings</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="ask" aria-labelledby="ask-title">
+        <h1 id="ask-title" class="ask-title">What photo are you looking for?</h1>
+
+        <form class="search" role="search" data-search-form>
+          <label class="visually-hidden" for="query">Describe the photo or video</label>
+          <svg class="icon search-icon" aria-hidden="true"><use href="#i-search" /></svg>
+          <input
+            id="query"
+            class="search-input"
+            type="search"
+            enterkeyhint="search"
+            autocomplete="off"
+            placeholder="For example: grandchildren at the beach"
+            data-query-input
+          />
+          <button class="search-button" type="submit">Search</button>
+        </form>
+
+        <div class="examples" data-suggestion-row hidden>
+          <span class="examples-label">Try one of these:</span>
+          <button type="button" data-suggestion="dog in the park">Dog in the park</button>
+          <button type="button" data-suggestion="birthday cake">Birthday cake</button>
+          <button type="button" data-suggestion="city at night">City at night</button>
+          <button type="button" data-suggestion="lunch by the water">Lunch by the water</button>
+        </div>
+
+        <div class="narrow" data-narrow>
+          <fieldset class="choice" data-media-filter>
+            <legend>Show</legend>
+            <div class="choice-options">
+              <label
+                ><input type="radio" name="media" value="all" checked /><span
+                  >Everything</span
+                ></label
+              >
+              <label><input type="radio" name="media" value="image" /><span>Photos</span></label>
+              <label><input type="radio" name="media" value="video" /><span>Videos</span></label>
+            </div>
+          </fieldset>
+
+          <label class="when">
+            <span class="when-label">When</span>
+            <span class="select">
+              <select data-time-filter>
+                <option value="all">Any time</option>
+                <option value="30d">Last 30 days</option>
+                <option value="this-year">This year</option>
+                <option value="last-year">Last year</option>
+                <optgroup label="Season">
+                  <option value="winter">Winter</option>
+                  <option value="spring">Spring</option>
+                  <option value="summer">Summer</option>
+                  <option value="autumn">Autumn</option>
+                </optgroup>
+                <optgroup label="Month">
+                  <option value="jan">January</option>
+                  <option value="feb">February</option>
+                  <option value="mar">March</option>
+                  <option value="apr">April</option>
+                  <option value="may">May</option>
+                  <option value="jun">June</option>
+                  <option value="jul">July</option>
+                  <option value="aug">August</option>
+                  <option value="sep">September</option>
+                  <option value="oct">October</option>
+                  <option value="nov">November</option>
+                  <option value="dec">December</option>
+                </optgroup>
+              </select>
+            </span>
+          </label>
+        </div>
+
+        <p class="understood" data-active-filters hidden></p>
+      </section>
+
+      <section class="progress" data-progress-panel hidden aria-live="polite">
+        <div class="progress-text">
+          <p class="progress-title" data-progress-title>Adding photos</p>
+          <p class="progress-detail" data-progress-detail></p>
+        </div>
+        <button class="button button-plain" type="button" data-cancel-button>Stop</button>
+        <div class="progress-track" aria-hidden="true"><span data-progress-fill></span></div>
+      </section>
+
+      <section class="results" aria-labelledby="results-title">
+        <div class="results-head" data-results-head>
+          <h2 id="results-title" data-results-title>Your photos</h2>
+          <p data-results-summary></p>
+        </div>
+
+        <ul class="grid" data-results-grid></ul>
+
+        <div class="results-more" data-results-others hidden>
+          <button class="button button-plain" type="button" data-show-others>
+            Show other photos that might match
+          </button>
+        </div>
+
+        <div class="results-more" data-results-more hidden>
+          <button class="button button-plain" type="button" data-show-more>Show more</button>
+        </div>
+
+        <div class="empty" data-empty-state hidden>
+          <div data-empty-library>
+            <h2 class="empty-title">Start by adding your photos</h2>
+            <ol class="steps">
+              <li>
+                <strong>Add your photos and videos</strong>
+                <span>They stay on this computer. Nothing is uploaded.</span>
+              </li>
+              <li>
+                <strong>Describe what you remember</strong>
+                <span>For example “dog in the snow” or “wedding cake”.</span>
+              </li>
+              <li>
+                <strong>Click a photo to see it big</strong>
+                <span>Use Previous and Next to look through the results.</span>
+              </li>
+            </ol>
+            <div class="empty-actions">
+              <label class="button button-primary button-large">
+                <input type="file" accept="image/*,video/*" multiple data-file-input />
+                <svg class="icon" aria-hidden="true"><use href="#i-plus" /></svg>
+                Add photos
+              </label>
+              <button class="button button-plain button-large" type="button" data-demo-button>
+                Try with sample photos
+              </button>
+            </div>
+            <p class="empty-hint">You can also drag photos or folders onto this page.</p>
+          </div>
+
+          <div data-empty-search hidden>
+            <h2 class="empty-title" data-empty-search-title>No photos found</h2>
+            <p class="empty-text" data-empty-search-detail>
+              Try different words, or show everything from any time.
+            </p>
+            <div class="empty-actions">
+              <button
+                class="button button-primary button-large"
+                type="button"
+                data-show-closest
+                hidden
+              >
+                Show the closest photos
+              </button>
+              <button class="button button-plain button-large" type="button" data-reset-filters>
+                Show everything
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <svg class="icon" aria-hidden="true"><use href="#i-lock" /></svg>
+      <p>
+        Your photos stay on this computer. They are never uploaded.
+        <button class="link-button" type="button" data-open-sheet>How this works</button>
+      </p>
+    </footer>
+
+    <div class="drop-veil" data-drop-veil hidden>
+      <p>Drop your photos here</p>
+    </div>
+
+    <dialog class="sheet" data-library-sheet aria-labelledby="sheet-title">
+      <div class="sheet-inner" tabindex="-1" autofocus>
+        <header class="sheet-head">
+          <h2 id="sheet-title">Settings</h2>
+          <button class="button button-plain" type="button" data-close-sheet>
+            <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
+            Close
+          </button>
+        </header>
+
+        <section class="sheet-section">
+          <h3>Your photos</h3>
+          <p class="sheet-figure" data-library-detail>No photos or videos yet.</p>
+          <p class="sheet-muted" data-storage-usage></p>
+          <div class="sheet-actions">
+            <label class="button button-primary">
+              <input type="file" accept="image/*,video/*" multiple data-file-input />
+              <svg class="icon" aria-hidden="true"><use href="#i-plus" /></svg>
+              Add photos
+            </label>
+            <label class="button button-plain">
+              <input
+                type="file"
+                accept="image/*,video/*"
+                multiple
+                webkitdirectory
+                data-folder-input
+              />
+              <svg class="icon" aria-hidden="true"><use href="#i-folder" /></svg>
+              Add a whole folder
+            </label>
+          </div>
+        </section>
+
+        <section class="sheet-section">
+          <label class="switch">
+            <input type="checkbox" role="switch" data-persist-toggle checked />
+            <span class="switch-track" aria-hidden="true"></span>
+            <span class="switch-text">
+              <strong>Remember my photos</strong>
+              <span>Keep them here after you close this page.</span>
+            </span>
+          </label>
+        </section>
+
+        <section class="sheet-section">
+          <h3>Smart search</h3>
+          <p class="sheet-status">
+            <span class="status-dot" data-model-dot aria-hidden="true"></span>
+            <span data-runtime-label>Not set up yet</span>
+          </p>
+          <p class="sheet-muted" data-runtime-detail></p>
+          <button class="button button-plain" type="button" data-model-retry hidden>
+            Try again
+          </button>
+        </section>
+
+        <section class="sheet-section">
+          <h3>Your privacy</h3>
+          <ul class="plain-list">
+            <li>Your photos and videos never leave this computer.</li>
+            <li>
+              Smart search is downloaded once from Hugging Face and then works on this computer.
+            </li>
+            <li>There are no accounts, no tracking and no advertising.</li>
+          </ul>
+        </section>
+
+        <section class="sheet-section sheet-danger">
+          <button class="button button-danger" type="button" data-clear-button>
+            Remove all photos from mnesia
+          </button>
+          <p class="sheet-muted">The original files on your computer are not deleted.</p>
+        </section>
+      </div>
+    </dialog>
+
+    <dialog class="confirm" data-confirm-dialog aria-labelledby="confirm-title">
+      <form method="dialog">
+        <h2 id="confirm-title" data-confirm-title>Remove all photos?</h2>
+        <p data-confirm-body></p>
+        <div class="confirm-actions">
+          <button class="button button-plain" value="cancel" autofocus>Keep them</button>
+          <button class="button button-danger-solid" value="confirm">Remove</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="viewer" data-viewer-dialog aria-labelledby="viewer-title">
+      <div class="viewer-frame" tabindex="-1" autofocus>
+        <header class="viewer-bar">
+          <div class="viewer-caption">
+            <h2 id="viewer-title" data-viewer-title></h2>
+            <p data-viewer-meta></p>
+          </div>
+          <button class="button button-on-dark" type="button" data-viewer-close>
+            <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
+            Close
+          </button>
+        </header>
+        <div class="viewer-media" data-viewer-body></div>
+        <footer class="viewer-nav">
+          <button class="button button-on-dark" type="button" data-viewer-prev>
+            <svg class="icon" aria-hidden="true"><use href="#i-left" /></svg>
+            Previous
+          </button>
+          <span class="viewer-position" data-viewer-position></span>
+          <button class="button button-on-dark" type="button" data-viewer-next>
+            Next
+            <svg class="icon" aria-hidden="true"><use href="#i-right" /></svg>
+          </button>
+        </footer>
+      </div>
+    </dialog>
+
+    <div class="toast" role="status" aria-live="polite" data-toast hidden></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

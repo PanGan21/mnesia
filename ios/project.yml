@@ -1,0 +1,55 @@
+name: Mnesia
+options:
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: 6.0
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+targets:
+  MnesiaCore:
+    type: framework
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Sources/Core
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.panagiotisganelis.mnesia.core
+        DEFINES_MODULE: YES
+        SKIP_INSTALL: YES
+  Mnesia:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: App
+        excludes:
+          - Resources/Info.plist
+    dependencies:
+      - target: MnesiaCore
+      - sdk: Photos.framework
+      - sdk: Vision.framework
+      - sdk: AVFoundation.framework
+      - sdk: AVKit.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.panagiotisganelis.mnesia
+        PRODUCT_NAME: mnesia
+        INFOPLIST_FILE: App/Resources/Info.plist
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 1.0
+        CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+  MnesiaCoreTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Tests/MnesiaCoreTests
+    dependencies:
+      - target: MnesiaCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.panagiotisganelis.mnesia.core.tests
+        GENERATE_INFOPLIST_FILE: YES

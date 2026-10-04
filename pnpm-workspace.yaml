@@ -1,0 +1,25 @@
+# Supply-chain hardening for pnpm 10.
+
+# Only install versions that have been public for at least 24h (minutes).
+minimumReleaseAge: 1440
+
+# Fail the install if a package's trust evidence (e.g. provenance) gets weaker.
+trustPolicy: no-downgrade
+
+# Fail the install when a dependency wants to run lifecycle scripts that
+# have not been explicitly reviewed below.
+strictDepBuilds: true
+
+# Packages allowed to run install scripts. The app runs in the browser, so none are needed.
+onlyBuiltDependencies: []
+
+# Reviewed and intentionally not built.
+ignoredBuiltDependencies:
+  - fsevents
+  - protobufjs
+
+overrides:
+  # Node-only runtimes pulled in by @huggingface/transformers. The app only uses
+  # the browser build (onnxruntime-web), so these are never needed.
+  onnxruntime-node: "-"
+  sharp: "-"
